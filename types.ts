@@ -7,6 +7,7 @@ export type Person =
 export type Employee =
 {
     person: Person,
+    company: Company,
     position: string
 }
 
