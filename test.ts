@@ -33,16 +33,6 @@ let l2 : Employee[] = [e1, e2, e3]
 //#endregion
 
 //#region Methods
-/*
-let select = function<T, U>(toSelect: T, from: U[]) : T[]{
-    let list : T[] = []
-    
-    from.forEach(element => list.push(element))
-
-    return list
-}
-*/
-
 let getName = function(person : Person) : string 
 {
     if(checkTypeValidity(person.name, "string"))
@@ -59,17 +49,34 @@ let getNameFromEmployee = function(employee: Employee) : string
         throw new Error("Invalid type!")
 }
 
-let select = function<T, U>(toSelect: Fun<U, T>, from: U[]) : T[]
+/*
+let select = function<T, U>(toSelect: T, from: U[]) : T[]{
+    let list : T[] = []
+    
+    from.forEach(element => list.push(element))
+
+    return list
+}
+*/
+
+let select = function<T, U>(toSelect: Fun<T, U>, from: T[]) : U[]
 {
-    let returnList: T[] = []
-    from.forEach(element => returnList.push(toSelect.f(element)))
+    let returnList: U[] = []
+    let checkerType: U
+
+    from.forEach(element => {
+        if(typeof(toSelect.f(element)) === typeof(checkerType))
+            returnList.push(toSelect.f(element))
+        else
+            throw new Error("Type error!")
+    })
     return returnList
 }
 //#endregion
 
-let nL1 : string[] = select<string, Person>(Fun(x => x.name), l1)
-let pL1 : Person[] = select<Person, Employee>(Fun(x => x.person), l2)
-let nL2 : string[] = select<string, Employee>(Fun(x => x.person.name), l2)
+let nL1 : string[] = select<Person, string>(Fun(x => x.name), l1)
+let pL1 : Person[] = select<Employee, Person>(Fun(x => x.person), l2)
+let nL2 : string[] = select<Employee, string>(Fun(x => x.person.name), l2)
 
 console.log(getName(p1))
 console.log(getName(p2))

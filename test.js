@@ -24,15 +24,6 @@ var l1 = [p1, p2, p3];
 var l2 = [e1, e2, e3];
 //#endregion
 //#region Methods
-/*
-let select = function<T, U>(toSelect: T, from: U[]) : T[]{
-    let list : T[] = []
-    
-    from.forEach(element => list.push(element))
-
-    return list
-}
-*/
 var getName = function (person) {
     if (types_1.checkTypeValidity(person.name, "string"))
         return person.name;
@@ -45,6 +36,15 @@ var getNameFromEmployee = function (employee) {
     else
         throw new Error("Invalid type!");
 };
+/*
+let select = function<T, U>(toSelect: T, from: U[]) : T[]{
+    let list : T[] = []
+    
+    from.forEach(element => list.push(element))
+
+    return list
+}
+*/
 var select = function (toSelect, from) {
     var returnList = [];
     from.forEach(function (element) { return returnList.push(toSelect.f(element)); });
