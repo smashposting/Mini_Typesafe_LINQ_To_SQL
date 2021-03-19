@@ -1,6 +1,17 @@
 "use strict";
 exports.__esModule = true;
 var types_1 = require("./types");
+var Fun = function (f) {
+    return ({
+        f: f,
+        then: function (g) {
+            return then(this, g);
+        }
+    });
+};
+var then = function (f, g) {
+    return Fun(function (a) { return g.f(f.f(a)); });
+};
 //#region Variables
 var p1 = { name: "Bill", age: 16 };
 var p2 = { name: "Owen", age: 24 };
@@ -9,8 +20,19 @@ var c1 = { name: "HR", location: "Rotterdam" };
 var e1 = { person: p1, company: c1, position: "Cashier" };
 var e2 = { person: p2, company: c1, position: "Developer" };
 var e3 = { person: p3, company: c1, position: "Study Coach" };
+var l1 = [p1, p2, p3];
+var l2 = [e1, e2, e3];
 //#endregion
 //#region Methods
+/*
+let select = function<T, U>(toSelect: T, from: U[]) : T[]{
+    let list : T[] = []
+    
+    from.forEach(element => list.push(element))
+
+    return list
+}
+*/
 var getName = function (person) {
     if (types_1.checkTypeValidity(person.name, "string"))
         return person.name;
@@ -23,7 +45,18 @@ var getNameFromEmployee = function (employee) {
     else
         throw new Error("Invalid type!");
 };
+var select = function (toSelect, from) {
+    var returnList = [];
+    from.forEach(function (element) { return returnList.push(toSelect.f(element)); });
+    return returnList;
+};
 //#endregion
+var nL1 = select(Fun(function (x) { return x.name; }), l1);
+var pL1 = select(Fun(function (x) { return x.person; }), l2);
+var nL2 = select(Fun(function (x) { return x.person.name; }), l2);
 console.log(getName(p1));
 console.log(getName(p2));
-console.log(getName(p3));
+console.log(getNameFromEmployee(e3));
+console.log(nL1[0]);
+console.log(pL1[0]);
+console.log(nL2[2]);
