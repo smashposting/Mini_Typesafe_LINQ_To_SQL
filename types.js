@@ -2,6 +2,6 @@
 exports.__esModule = true;
 exports.checkTypeValidity = void 0;
 var checkTypeValidity = function (toCheck, mustBe) {
-    return typeof (toCheck) === mustBe;
+    return typeof (toCheck) === typeof (mustBe);
 };
 exports.checkTypeValidity = checkTypeValidity;

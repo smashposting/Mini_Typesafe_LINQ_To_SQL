@@ -17,7 +17,9 @@ export type Company =
     location: string
 }
 
-export let checkTypeValidity = function<T>(toCheck: T, mustBe: string) : boolean
+export type Pair<A, B> = [A, B]
+
+export let checkTypeValidity = function<T, U>(toCheck: T, mustBe: U) : boolean
 {
-    return typeof(toCheck) === mustBe
+    return typeof(toCheck) === typeof(mustBe)
 }

@@ -47,16 +47,32 @@ let select = function<T, U>(toSelect: T, from: U[]) : T[]{
 */
 var select = function (toSelect, from) {
     var returnList = [];
-    from.forEach(function (element) { return returnList.push(toSelect.f(element)); });
+    var checkerType;
+    from.forEach(function (element) {
+        if (types_1.checkTypeValidity(typeof (toSelect.f(element)), typeof (checkerType)))
+            returnList.push(toSelect.f(element));
+        else
+            throw new Error('Type error!');
+    });
+    return returnList;
+};
+var include = function (toSelect, from) {
+    var returnList = [];
+    //let checkerType: U
+    from.forEach(function (element) {
+        returnList.push([element, toSelect.f(element)]);
+    });
     return returnList;
 };
 //#endregion
 var nL1 = select(Fun(function (x) { return x.name; }), l1);
 var pL1 = select(Fun(function (x) { return x.person; }), l2);
 var nL2 = select(Fun(function (x) { return x.person.name; }), l2);
-console.log(getName(p1));
-console.log(getName(p2));
-console.log(getNameFromEmployee(e3));
-console.log(nL1[0]);
-console.log(pL1[0]);
-console.log(nL2[2]);
+var iL1 = include(Fun(function (x) { return x.person; }), l2);
+//console.log(getName(p1))
+//console.log(getName(p2))
+//console.log(getNameFromEmployee(e3))
+//console.log(nL1[0])
+//console.log(pL1[0])
+//console.log(nL2[2])
+console.log(iL1[0][0].position + " " + iL1[0][1].name);

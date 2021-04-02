@@ -1,4 +1,4 @@
-import {Person, Employee, Company, checkTypeValidity} from './types'
+import {Person, Employee, Company, Pair, checkTypeValidity} from './types'
 
 interface Fun<A, B> {
     f : (_:A) => B
@@ -65,11 +65,24 @@ let select = function<T, U>(toSelect: Fun<T, U>, from: T[]) : U[]
     let checkerType: U
 
     from.forEach(element => {
-        if(typeof(toSelect.f(element)) === typeof(checkerType))
+        if(checkTypeValidity(typeof(toSelect.f(element)), typeof(checkerType)))
             returnList.push(toSelect.f(element))
         else
-            throw new Error("Type error!")
+            throw new Error('Type error!')
     })
+    return returnList
+}
+
+let include = function<T, U>(toSelect: Fun<T, U>, from: T[]) : Pair<T,U>[]
+{
+    let returnList: Pair<T,U>[] = []
+    //let checkerType: U
+
+    from.forEach(element =>
+        {
+            returnList.push([element,toSelect.f(element)])
+        })
+
     return returnList
 }
 //#endregion
@@ -78,9 +91,12 @@ let nL1 : string[] = select<Person, string>(Fun(x => x.name), l1)
 let pL1 : Person[] = select<Employee, Person>(Fun(x => x.person), l2)
 let nL2 : string[] = select<Employee, string>(Fun(x => x.person.name), l2)
 
-console.log(getName(p1))
-console.log(getName(p2))
-console.log(getNameFromEmployee(e3))
-console.log(nL1[0])
-console.log(pL1[0])
-console.log(nL2[2])
+let iL1 : Pair<Employee, Person>[] = include<Employee, Person>(Fun(x => x.person), l2)
+
+//console.log(getName(p1))
+//console.log(getName(p2))
+//console.log(getNameFromEmployee(e3))
+//console.log(nL1[0])
+//console.log(pL1[0])
+//console.log(nL2[2])
+console.log(iL1[0][0].position + " " + iL1[0][1].name)
