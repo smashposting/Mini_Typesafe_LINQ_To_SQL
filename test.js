@@ -24,27 +24,6 @@ var l1 = [p1, p2, p3];
 var l2 = [e1, e2, e3];
 //#endregion
 //#region Methods
-var getName = function (person) {
-    if (types_1.checkTypeValidity(person.name, "string"))
-        return person.name;
-    else
-        throw new Error("Invalid type!");
-};
-var getNameFromEmployee = function (employee) {
-    if (types_1.checkTypeValidity(employee.person.name, "string"))
-        return employee.person.name;
-    else
-        throw new Error("Invalid type!");
-};
-/*
-let select = function<T, U>(toSelect: T, from: U[]) : T[]{
-    let list : T[] = []
-    
-    from.forEach(element => list.push(element))
-
-    return list
-}
-*/
 var select = function (toSelect, from) {
     var returnList = [];
     var checkerType;
@@ -55,6 +34,17 @@ var select = function (toSelect, from) {
             throw new Error('Type error!');
     });
     return returnList;
+};
+/*
+Takes attached item as input
+Applies function on input
+Returns output
+*/
+var id = function () {
+    return Fun(function (x) { return x; });
+};
+var Select = function (f) {
+    return Fun(function (c) { return f.f(c); });
 };
 var include = function (toSelect, from) {
     var returnList = [];
@@ -69,10 +59,12 @@ var nL1 = select(Fun(function (x) { return x.name; }), l1);
 var pL1 = select(Fun(function (x) { return x.person; }), l2);
 var nL2 = select(Fun(function (x) { return x.person.name; }), l2);
 var iL1 = include(Fun(function (x) { return x.person; }), l2);
+var name = id().then(Select(Fun(function (x) { return x.map(function (e) { return e.name; }); }))).f(l1);
+console.log(name);
 //console.log(getName(p1))
 //console.log(getName(p2))
 //console.log(getNameFromEmployee(e3))
 //console.log(nL1[0])
 //console.log(pL1[0])
 //console.log(nL2[2])
-console.log(iL1[0][0].position + " " + iL1[0][1].name);
+//console.log(iL1[0][0].position + " " + iL1[0][1].name)

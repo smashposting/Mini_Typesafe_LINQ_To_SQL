@@ -33,32 +33,6 @@ let l2 : Employee[] = [e1, e2, e3]
 //#endregion
 
 //#region Methods
-let getName = function(person : Person) : string 
-{
-    if(checkTypeValidity(person.name, "string"))
-        return person.name
-    else
-        throw new Error("Invalid type!")
-}
-
-let getNameFromEmployee = function(employee: Employee) : string
-{
-    if(checkTypeValidity(employee.person.name, "string"))
-        return employee.person.name
-    else
-        throw new Error("Invalid type!")
-}
-
-/*
-let select = function<T, U>(toSelect: T, from: U[]) : T[]{
-    let list : T[] = []
-    
-    from.forEach(element => list.push(element))
-
-    return list
-}
-*/
-
 let select = function<T, U>(toSelect: Fun<T, U>, from: T[]) : U[]
 {
     let returnList: U[] = []
@@ -71,6 +45,19 @@ let select = function<T, U>(toSelect: Fun<T, U>, from: T[]) : U[]
             throw new Error('Type error!')
     })
     return returnList
+}
+
+/*
+Takes attached item as input
+Applies function on input
+Returns output
+*/
+let id = function<T>() : Fun<T, T> {
+  return Fun(x => x)
+}
+
+let Select = function<T, U>(f:Fun<T, U>) : Fun<T, U> {
+  return Fun(c => f.f(c))
 }
 
 let include = function<T, U>(toSelect: Fun<T, U>, from: T[]) : Pair<T,U>[]
@@ -93,10 +80,13 @@ let nL2 : string[] = select<Employee, string>(Fun(x => x.person.name), l2)
 
 let iL1 : Pair<Employee, Person>[] = include<Employee, Person>(Fun(x => x.person), l2)
 
+let name : string[] = id<Person[]>().then(Select(Fun(x => x.map(e => e.name)))).f(l1)
+console.log(name);
+
 //console.log(getName(p1))
 //console.log(getName(p2))
 //console.log(getNameFromEmployee(e3))
 //console.log(nL1[0])
 //console.log(pL1[0])
 //console.log(nL2[2])
-console.log(iL1[0][0].position + " " + iL1[0][1].name)
+//console.log(iL1[0][0].position + " " + iL1[0][1].name)
