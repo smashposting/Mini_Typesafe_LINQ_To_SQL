@@ -72,6 +72,10 @@ let include = function<T, U>(toSelect: Fun<T, U>, from: T[]) : Pair<T,U>[]
 
     return returnList
 }
+
+let Include = function<T, U>(f: Fun<T, U>) : Fun<T, U> {
+  
+}
 //#endregion
 
 let nL1 : string[] = select<Person, string>(Fun(x => x.name), l1)
