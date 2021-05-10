@@ -52,11 +52,11 @@ Takes attached item as input
 Applies function on input
 Returns output
 */
-let id = function<T>() : Fun<T, T> {
-  return Fun(x => x)
-}
+let id = <T>() : Fun<T, T> => Fun(x => x)
 
-let Select = function<T, U>(f:Fun<T, U>) : Fun<T, U> {
+let Select = <T, U>(f:Fun<T, U>) : Fun<T, U> => {
+  let returnList : U[]
+
   return Fun(c => f.f(c))
 }
 
@@ -73,8 +73,8 @@ let include = function<T, U>(toSelect: Fun<T, U>, from: T[]) : Pair<T,U>[]
     return returnList
 }
 
-let Include = function<T, U>(f: Fun<T, U>) : Fun<T, U> {
-  
+let Include = <T, U, V>(f: Fun<T, Pair<U, V>) : Fun<T, U> => { //WIP
+  return Fun(x => f.f(x))
 }
 //#endregion
 
@@ -84,8 +84,12 @@ let nL2 : string[] = select<Employee, string>(Fun(x => x.person.name), l2)
 
 let iL1 : Pair<Employee, Person>[] = include<Employee, Person>(Fun(x => x.person), l2)
 
-let name : string[] = id<Person[]>().then(Select(Fun(x => x.map(e => e.name)))).f(l1)
-console.log(name);
+let nameList1 : string[] = id<Person[]>().then(Select(Fun(x => x.map(x => x.name)))).f(l1)
+let nameList2 : string[] = Select<Person[], string[]>(Fun(x => x.map(x => x.name))).f(l1)
+console.log(nameList1);
+console.log(nameList2);
+
+let nameAgePairList1 : Pair<string, number>[] = Include<Person[], string[], number[]>(Fun()) //WIP
 
 //console.log(getName(p1))
 //console.log(getName(p2))

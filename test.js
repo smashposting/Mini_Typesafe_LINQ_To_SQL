@@ -40,10 +40,9 @@ Takes attached item as input
 Applies function on input
 Returns output
 */
-var id = function () {
-    return Fun(function (x) { return x; });
-};
+var id = function () { return Fun(function (x) { return x; }); };
 var Select = function (f) {
+    var returnList;
     return Fun(function (c) { return f.f(c); });
 };
 var include = function (toSelect, from) {
@@ -54,12 +53,15 @@ var include = function (toSelect, from) {
     });
     return returnList;
 };
+var Include = function (f) {
+    return Fun(function (x) { return f.f(x); });
+};
 //#endregion
 var nL1 = select(Fun(function (x) { return x.name; }), l1);
 var pL1 = select(Fun(function (x) { return x.person; }), l2);
 var nL2 = select(Fun(function (x) { return x.person.name; }), l2);
 var iL1 = include(Fun(function (x) { return x.person; }), l2);
-var name = id().then(Select(Fun(function (x) { return x.map(function (e) { return e.name; }); }))).f(l1);
+var name = Select(Fun(function (x) { return x.map(function (x) { return x.name; }); })).f(l1);
 console.log(name);
 //console.log(getName(p1))
 //console.log(getName(p2))
